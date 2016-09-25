@@ -120,7 +120,7 @@
                         <include>**/*</include>
                     </includes>
                     <repositoryName>dustjs-maven-plugin</repositoryName>      <!-- github repo name -->
-                    <repositoryOwner>chanwookpark</repositoryOwner>    <!-- github username  -->
+                    <repositoryOwner>itwise</repositoryOwner>    <!-- github username  -->
                 </configuration>
                 <executions>
                     <!-- run site-maven-plugin's 'site' target as part of the build's normal 'deploy' phase -->
