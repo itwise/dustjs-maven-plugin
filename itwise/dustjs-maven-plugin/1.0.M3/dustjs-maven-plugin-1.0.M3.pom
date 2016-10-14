@@ -6,7 +6,7 @@
 
     <groupId>itwise</groupId>
     <artifactId>dustjs-maven-plugin</artifactId>
-    <version>1.0.M2</version>
+    <version>1.0.M3</version>
     <packaging>maven-plugin</packaging>
 
     <name>Dustjs compiler on maven build</name>
