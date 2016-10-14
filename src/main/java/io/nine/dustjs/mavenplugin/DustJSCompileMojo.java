@@ -39,6 +39,9 @@ public class DustJSCompileMojo extends AbstractMojo {
     @Parameter(property = "dustjsCompiler.dustjsFile", required = true)
     private String dustjsFile;
 
+    @Parameter(property = "dustjsCompiler.templateFileSuffix", required = true, defaultValue = "html")
+    private String templateFileSuffix;
+
     private DustCompiler dustCompiler = new DustCompiler();
 
     public void execute() throws MojoExecutionException, MojoFailureException {
@@ -97,15 +100,34 @@ public class DustJSCompileMojo extends AbstractMojo {
 
         Map<String, String> compiledMap = new HashMap<>();
         for (File template : dir.listFiles()) {
-            final String templateKey = getTemplateKey(template);
-            final String compiled = dustCompiler.compile(templateKey, template, getLog());
+            if (isCompilingType(template)) {
+                final String templateKey = getTemplateKey(template);
+                final String compiled = dustCompiler.compile(templateKey, template, getLog());
 
-            if (getLog().isDebugEnabled()) {
-                getLog().debug("DustJS Template: " + templateKey + "\n" + compiled);
+                if (getLog().isDebugEnabled()) {
+                    getLog().debug("DustJS Template: " + templateKey + "\n" + compiled);
+                }
+                compiledMap.put(templateKey, compiled);
+            } else {
+                getLog().debug("Pass compiling!! [path: " + template.getAbsolutePath() + "]");
             }
-            compiledMap.put(templateKey, compiled);
         }
         return compiledMap;
+    }
+
+    /**
+     * 컴파일이 가능한 파일인지 확인
+     *
+     * @param file
+     * @return 컴파일이 가능한 템플릿 파일이면 true, 아니면 false 반환
+     */
+    private boolean isCompilingType(File file) {
+        if (file == null || file.isDirectory()) {
+            return false;
+        } else if (!file.getName().endsWith(templateFileSuffix)) {
+            return false;
+        }
+        return true;
     }
 
     protected void loadScript() {
